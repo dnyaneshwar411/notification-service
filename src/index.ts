@@ -1,6 +1,7 @@
 import "./infrastructure";
 import "./orchestrator/event.router";
 import { publishEvent } from "./orchestrator/publisher";
+import { sendMail } from "./providers/email/mailer";
 
 setInterval(function () {
   // return 

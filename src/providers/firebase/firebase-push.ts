@@ -1,16 +1,19 @@
-import { initializeApp } from 'firebase-admin/app';
+import { initializeApp, ServiceAccount } from 'firebase-admin/app';
 import { envVars } from '../../config/constants';
 import { getMessaging } from 'firebase-admin/messaging';
 import { PushNotification } from '../../infrastructure/types';
 import { credential } from 'firebase-admin';
-import path from 'node:path';
-import { readFile } from 'node:fs/promises';
+
+const credentials: ServiceAccount = {
+  projectId: envVars.FIREBASE_PROJECT_ID,
+  privateKey: envVars.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+  clientEmail: envVars.FIREBASE_CLIENT_EMAIL,
+};
 
 const init = async function () {
   try {
-    const serviceAccount = await readFile(path.resolve(__dirname, "./service-account.json"), "utf-8")
     initializeApp({
-      credential: credential.cert(JSON.parse(serviceAccount)),
+      credential: credential.cert(credentials),
       projectId: envVars.FIREBASE_PROJECT_ID
     })
   } catch (error) {
@@ -22,8 +25,6 @@ const init = async function () {
 init()
 
 export const sendFirebaseNotification = async function (options: PushNotification) {
-  // return
-  console.log("condition hit", options)
   try {
     const { fcmToken: token, images, ...data } = options
     const response = await getMessaging().send({
