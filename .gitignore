@@ -1,0 +1,67 @@
+# -------------------------
+# Dependencies
+# -------------------------
+node_modules/
+.pnpm-store/
+
+# -------------------------
+# Build outputs
+# -------------------------
+dist/
+build/
+out/
+
+# -------------------------
+# TypeScript
+# -------------------------
+*.tsbuildinfo
+
+# -------------------------
+# Logs
+# -------------------------
+logs/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# -------------------------
+# Environment variables
+# -------------------------
+.env
+.env.*
+!.env.example
+
+# -------------------------
+# OS files
+# -------------------------
+.DS_Store
+Thumbs.db
+
+# -------------------------
+# IDE / Editor
+# -------------------------
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# -------------------------
+# Testing
+# -------------------------
+coverage/
+
+# -------------------------
+# Misc
+# -------------------------
+.tmp/
+.temp/
+.cache/
+
+# -------------------------
+# Optional (if using Docker)
+# -------------------------
+docker-data/
+pnpm-lock.yaml
+dump.rdb
