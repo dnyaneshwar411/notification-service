@@ -1,32 +1,43 @@
-import "./infrastructure";
-import "./orchestrator/event.router";
-import { publishEvent } from "./orchestrator/publisher";
-import { sendMail } from "./providers/email/mailer";
+import mongoose from "mongoose";
+import { env } from "./config/envVars";
+import { Server } from "node:http";
+import app from "./app";
 
-setInterval(function () {
-  // return 
-  publishEvent("notification", {
-    feature: "meal",
-    queue: "sms",
-    type: "sms",
-    phone: "phone",
-    message: "asdasdasdasd",
+let server: undefined | Server;
+
+mongoose
+  .connect(env.MONGOOSE_DB_URL)
+  .then(() => {
+    console.log("db connected");
+    server = app.listen(env.EXPRESS_PORT, () => {
+      console.log("server running");
+    });
+  })
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
   });
-  publishEvent("notification", {
-    feature: "meal",
-    queue: "push",
-    type: "push",
-    fcmToken: "asdsad",
-    subject: "subject",
-    message: "message",
-  });
-  publishEvent("notification", {
-    feature: "meal",
-    queue: "email",
-    type: "email",
-    sender: "",
-    receiver: "",
-    subject: "",
-    message: "",
-  });
-}, 1000);
+
+const exitHandler = function() {
+  if (server) {
+    server.close(() => {
+      console.log("server close");
+    });
+  }
+  process.exit(1);
+};
+
+const unexpectedErrorHandler = () => {
+  console.error("error ocurred serving closing");
+  exitHandler();
+};
+
+process.on("uncaughtException", unexpectedErrorHandler);
+process.on("unhandledRejection", unexpectedErrorHandler);
+
+process.on("SIGTERM", () => {
+  console.log("SIG TERM received");
+  if (server) {
+    server.close();
+  }
+});
