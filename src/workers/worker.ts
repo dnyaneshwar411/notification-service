@@ -23,6 +23,7 @@ const rateLimitOptionsSMS = {
 export const pushWorker = new Worker(
   "push",
   async function (job: Omit<NotificationEventPayload, "type">) {
+    console.log("executed", job.id)
     await sendFirebaseNotification(job.data);
   },
   {
@@ -34,6 +35,7 @@ export const pushWorker = new Worker(
 export const smsWorker = new Worker(
   "sms",
   async function (job: Omit<NotificationEventPayload, "type">) {
+    console.log("executed", job.id)
     await sendMail(job.data);
   },
   {
@@ -45,6 +47,7 @@ export const smsWorker = new Worker(
 export const emailWorker = new Worker(
   "email",
   async function (job: Omit<NotificationEventPayload, "type">) {
+    console.log("executed", job.id)
     await sendDLTMessage(job.data);
   },
   {

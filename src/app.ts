@@ -21,7 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 // app.options("*", cors());
 app.use("/v1", v1Routes);
 
-app.use((req, res, next) => {
+app.use((_, __, next) => {
   next(new ApiError(httpStatus.NOT_FOUND, "Not found"));
 });
 
