@@ -5,17 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
-    "devx": "ts-node-dev --respawn --transpile-only srcx/index.ts",
-    
     "db:seed": "ts-node-dev ./seed/index.ts",
-
     "dev:api": "ts-node-dev --respawn --transpile-only src/index.ts",
     "dev:workers": "ts-node-dev --respawn --transpile-only src/workers/init.ts",
-
     "clean": "rm -rf dist",
-    "build": "pnpm run clean && tsc",
-
+    "build": "pnpm run clean && esbuild src/index.ts src/workers/init.ts --bundle --platform=node --target=node20 --outdir=dist --outbase=src --external:@prisma/client --external:bcrypt",
     "start:api": "node dist/index.js",
     "start:workers": "node dist/workers/init.js"
   },
@@ -39,6 +33,7 @@
     "bullmq": "^5.73.4",
     "cors": "^2.8.6",
     "dotenv": "^17.4.1",
+    "esbuild": "^0.28.0",
     "express": "^5.2.1",
     "firebase-admin": "^13.8.0",
     "http-status": "^2.1.0",
