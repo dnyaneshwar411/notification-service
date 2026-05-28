@@ -24,13 +24,17 @@ const eventBus = new EventBus();
 
 eventBus.subscribe("notification", async function (payload: NotificationEventPayload) {
   const jobId = generateJobId({ queue: payload.type });
-  switch (payload.type) {
+  const { type, ...jobData } = payload;
+  switch (type) {
     case "push":
-      pushQueue.add(jobId, payload, retryAndBackOff);
+      await pushQueue.add(jobId, jobData, retryAndBackOff);
+      break;
     case "email":
-      emailQueue.add(jobId, payload, retryAndBackOff);
+      await emailQueue.add(jobId, jobData, retryAndBackOff);
+      break;
     case "sms":
-      smsQueue.add(jobId, payload, retryAndBackOff);
+      await smsQueue.add(jobId, jobData, retryAndBackOff);
+      break;
     default:
       break;
   }

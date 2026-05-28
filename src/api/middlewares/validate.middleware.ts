@@ -2,33 +2,40 @@ import httpStatus from "http-status";
 import { NextFunction, Request, Response } from "express";
 import { ZodObject } from "zod";
 import { ApiError } from "../utils/apiError";
-import { pick } from "../../utils/pick";
-import { ZodIssue } from "zod/v3";
 
-export const validate = function(schema: ZodObject) {
-  return function(req: Request, res: Response, next: NextFunction) {
-    try {
-      const validSchema = pick(schema, ["body", "query", "params"]);
-      const objectToBeValidated = pick(req, Object.keys(validSchema));
+type InferZodIssue<T extends ZodObject<any, any>> =
+  ReturnType<T['safeParse']> extends { success: false; error: { issues: Array<infer I> } } ? I : any;
 
-      const result = validSchema.safeParse(objectToBeValidated);
+export const validate = function (schemaWrapper: ZodObject<any, any>) {
+  return (req: Request, res: Response, next: NextFunction) => {
+    const errors: string[] = [];
+    const sources: Array<'body' | 'query' | 'params'> = ['body', 'query', 'params'];
 
-      if (!result.success) {
-        const errorMessage = result.error.issues
-          .map(
-            (details: ZodIssue) =>
-              `${details.path.join(".")}: ${details.message}`,
-          )
-          .join(", ");
+    const config = schemaWrapper.shape;
 
-        return next(new ApiError(httpStatus.BAD_REQUEST, errorMessage));
+    sources.forEach((source) => {
+      const schema = config[source];
+
+      if (schema) {
+        const result = schema.safeParse(req[source]);
+
+        if (!result.success) {
+          const sourceErrors = result.error.issues.map(
+            (details: InferZodIssue<typeof schema>) =>
+              `[${source}] ${details.path.join(".")}: ${details.message}`
+          );
+          errors.push(...sourceErrors);
+        } else {
+          req[source] = result.data;
+        }
       }
-    } catch (error) {
-      const errorMessage =
-        error instanceof Error
-          ? error.message || "Something went wrong"
-          : "Something went wrong";
-      next(new ApiError(httpStatus.BAD_REQUEST, errorMessage));
+    });
+
+    if (errors.length > 0) {
+      const errorMessage = errors.join(", ");
+      return next(new ApiError(httpStatus.BAD_REQUEST, errorMessage));
     }
+
+    return next();
   };
 };

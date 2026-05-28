@@ -20,6 +20,11 @@ const userSchema = new Schema({
     type: String,
     trim: true,
     lowercase: true
+  },
+  fcmToken: {
+    type: String,
+    trim: true,
+    lowercase: true
   }
 });
 

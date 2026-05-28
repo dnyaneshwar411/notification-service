@@ -5,8 +5,9 @@ export const getUserById = async function (
   userId: Schema.Types.ObjectId | string,
   fields: string = ""
 ) {
-  return await User
+  const user = await User
     .findById(userId)
     .select(fields)
-    .lean()
+    .lean();
+  return user
 }

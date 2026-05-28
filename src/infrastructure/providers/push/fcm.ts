@@ -12,23 +12,23 @@ const init = async function () {
       credential: credential.cert(credentials),
       projectId: env.FIREBASE_PROJECT_ID
     })
-  } catch (error) {
-    console.error(error)
-  };
+  } catch (error) {};
   return
 };
 
 init()
 
-export const sendFirebaseNotification = async function (options: PushNotification) {
+type SendFirebaseNotificationType = (payload: PushNotification) => Promise<{ success: boolean; error?: any }>;
+
+export const sendFirebaseNotification: SendFirebaseNotificationType = async function (options: PushNotification) {
   try {
     const { fcmToken: token, images, ...data } = options
-    const response = await getMessaging().send({
+    await getMessaging().send({
       data,
       token
     })
-    console.log(response)
+    return { success: true }
   } catch (error) {
-    console.error(error)
+    return { success: false, error }
   }
 }

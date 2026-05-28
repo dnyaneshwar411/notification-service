@@ -13,6 +13,7 @@ export const retrieveNotificationsValidation = z.object({
 
 export const createNotificationValidation = z.object({
   body: z.object({
+    type: z.enum(["push", "email", "sms"]).default("push"),
     recipient: objectIdSchema,
     actor: objectIdSchema.optional(),
     entity: objectIdSchema.optional(),

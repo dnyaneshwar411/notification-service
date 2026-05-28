@@ -1,13 +1,14 @@
 import { env } from "../../../config/envVars";
 import { DLTMessagePayload } from "../../../shared/types/notification";
 
-export const sendDLTMessage = async function({
+type SendDLTMessageType = (payload: DLTMessagePayload) => Promise<{ success: boolean; error?: any }>;
+
+export const sendDLTMessage: SendDLTMessageType = async function ({
   vars: variables_values,
   numbers,
 }: DLTMessagePayload) {
   try {
     await new Promise((resolve) => setTimeout(resolve, 250));
-    return;
     const body = {
       sender_id: env.DLT_SENDER_ID,
       message: env.DLT_MESSAGE_ID,
@@ -25,8 +26,10 @@ export const sendDLTMessage = async function({
       },
       body: JSON.stringify(body),
     });
-    console.log(response);
+
+    if (![200, 201].includes(response.status)) return { success: false };
+    return { success: true };
   } catch (error) {
-    console.error(error);
+    return { success: false, error };
   }
 };

@@ -12,6 +12,13 @@ const transporter = nodemailer.createTransport({
   host: env.EMAIL_HOST,
 });
 
-export const sendMail = async function (options: EmailPayload) {
-  transporter.sendMail(options)
+type SendMailType = (payload: EmailPayload) => Promise<{ success: boolean; error?: any }>;
+
+export const sendMail: SendMailType = async function (options: EmailPayload) {
+  try {
+    const response = await transporter.sendMail(options);
+    return { success: true }
+  } catch (error) {
+    return { success: false, error }
+  }
 }

@@ -35,5 +35,5 @@ export type EmailPayload = {
 
 export type DLTMessagePayload = {
   vars: string;
-  numbers: string;
+  numbers: number
 }

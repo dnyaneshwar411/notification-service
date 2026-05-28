@@ -5,6 +5,7 @@ import { ApiError } from "../utils/apiError";
 import httpStatus from "http-status";
 import { Schema } from "mongoose";
 import { IUser } from "../../infrastructure/database/models/user.model";
+import { publishEvent } from "../../core/events/eventBus";
 
 export const retrieveNotifications = catchAsync(async function (
   req: Request,
@@ -27,7 +28,7 @@ export const createNotificationController = catchAsync(async function (
   req: Request,
   res: Response,
 ) {
-  // event bus to create the notification *tbd*
+  publishEvent(req.body)
   return res.status(200).json({ success: true, message: "Successfull" });
 });
 
