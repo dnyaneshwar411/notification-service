@@ -1,8 +1,6 @@
 import { Request, Response } from "express";
 import catchAsync from "../utils/catchAsync";
 import { getNotificationById, paginateNotifications, updateNotificationByFilter } from "../../core/entities/notification.entity";
-import { ApiError } from "../utils/apiError";
-import httpStatus from "http-status";
 import { Schema } from "mongoose";
 import { IUser } from "../../infrastructure/database/models/user.model";
 import { publishEvent } from "../../core/events/eventBus";
@@ -11,16 +9,11 @@ export const retrieveNotifications = catchAsync(async function (
   req: Request,
   res: Response,
 ) {
-  const notifications = await paginateNotifications();
-
-  if (notifications.length === 0) throw new ApiError(
-    httpStatus.NOT_FOUND, "No notifications found for this user"
-  )
-
+  const data = await paginateNotifications(req.query as any);
   return res.status(200).json({
     status_code: 200,
     message: "Successful",
-    data: notifications
+    ...data
   });
 })
 

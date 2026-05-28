@@ -20,7 +20,10 @@ const router: Router = express.Router();
 
 router
   .route("/")
-  .get(validate(retrieveNotificationsValidation), retrieveNotifications)
+  .get(
+    validate(retrieveNotificationsValidation),
+    retrieveNotifications
+  )
   .post(
     validate(createNotificationValidation),
     authenticate,

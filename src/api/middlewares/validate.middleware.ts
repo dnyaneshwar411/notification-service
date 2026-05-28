@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from "express";
 import { ZodObject } from "zod";
 import { ApiError } from "../utils/apiError";
 
-type InferZodIssue<T extends ZodObject<any, any>> =
+type InferZodIssue<T extends ZodObject<any, any>> = 
   ReturnType<T['safeParse']> extends { success: false; error: { issues: Array<infer I> } } ? I : any;
 
 export const validate = function (schemaWrapper: ZodObject<any, any>) {
@@ -26,7 +26,14 @@ export const validate = function (schemaWrapper: ZodObject<any, any>) {
           );
           errors.push(...sourceErrors);
         } else {
-          req[source] = result.data;
+          if (source === 'query') {
+            for (const key in req.query) {
+              delete req.query[key];
+            }
+            Object.assign(req.query, result.data);
+          } else {
+            req[source] = result.data;
+          }
         }
       }
     });
