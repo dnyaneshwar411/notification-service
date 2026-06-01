@@ -1,4 +1,4 @@
-import express, { Express } from "express";
+import express, { Express, NextFunction, Request, Response } from "express";
 import cors from "cors";
 import httpStatus from "http-status";
 import { ApiError } from "./api/utils/apiError";
@@ -19,6 +19,27 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // app.options("*", cors());
+app.use("/", function (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  const timeStart = performance.now();
+  res.on("finish", () => {
+    const timeEnd = performance.now();
+    console.log(
+      req.method,
+      "----",
+      req.originalUrl,
+      "----",
+      res.statusCode,
+      "----",
+      (timeEnd - timeStart).toFixed(2) + "ms",
+    );
+  });
+  next();
+})
+
 app.use("/v1", v1Routes);
 
 app.use((_, __, next) => {

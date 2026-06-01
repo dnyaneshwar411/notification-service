@@ -8,7 +8,6 @@ export const sendDLTMessage: SendDLTMessageType = async function ({
   numbers,
 }: DLTMessagePayload) {
   try {
-    await new Promise((resolve) => setTimeout(resolve, 250));
     const body = {
       sender_id: env.DLT_SENDER_ID,
       message: env.DLT_MESSAGE_ID,
