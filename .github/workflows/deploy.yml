@@ -13,15 +13,17 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      - name: Install SSH Pass
+        run: sudo apt-get install sshpass -y
+
       - name: Deploy via SSH
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: root
-          key: ${{ secrets.SSH_KEY }}
-          script: |
-            cd /home/ubuntu
-            git stash
-            git pull
-            pnpm i
-            pnpm run build
+        env:
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+        run: |
+          sshpass -p $SSH_KEY ssh -o StrictHostKeyChecking=no root@$SERVER_HOST "
+          cd /home/ubuntu && \
+          git stash && \
+          git pull && \
+          pnpm i && \
+          pnpm run build
