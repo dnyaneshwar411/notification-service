@@ -36,7 +36,7 @@ jobs:
           username: ubuntu
           key: ${{ secrets.SSH_KEY }}
           source: "dist/,package.json,pnpm-lock.yaml,ecosystem.config.js"
-          target: "/var/www/my-app"
+          target: "/home/ubuntu"
 
       - name: Production Post-Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
