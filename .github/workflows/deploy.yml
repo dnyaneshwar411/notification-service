@@ -46,6 +46,6 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd /home/ubuntu
-            pnpm install --prod --frozen-lockfile
+            pnpm install --prod
             pm2 startOrReload ecosystem.config.js --update-env
             pm2 save
