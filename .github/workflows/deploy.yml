@@ -50,6 +50,6 @@ jobs:
             
             # Now you can navigate and run your commands safely
             cd /home/ubuntu
-            pnpm install --prod --frozen-lockfile
+            pnpm install --prod
             pm2 startOrReload ecosystem.config.js --update-env
             pm2 save
