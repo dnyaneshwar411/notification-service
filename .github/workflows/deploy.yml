@@ -7,6 +7,7 @@ on:
 
 jobs:
   containerize:
+    runs-on: ubuntu-latest
     steps:
       - name: Publish
         uses: belezyakov/publish_docker-compose@v1.0.2
