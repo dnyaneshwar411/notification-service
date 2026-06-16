@@ -26,11 +26,7 @@ jobs:
         uses: docker/build-push-action@v7
         with:
           push: true
-          tags: |
-            user/app:latest
-            user/app:1.0.0
-            ghcr.io/user/app:latest
-            ghcr.io/user/app:1.0.0
+          tags: ghcr.io/dnyaneshwar411/notification-engine:latest
 
 
 # - name: Build Docker Image And Push to GHCR_PAT
