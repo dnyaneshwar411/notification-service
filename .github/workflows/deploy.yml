@@ -15,10 +15,18 @@ jobs:
           registry: ghcr.io
           username: dnyaneshwar411
           password: ${{ secrets.GHCR_PAT }}
-          script: |
-            docker build -f Dockerfile . --tag ghcr.io/dnyaneshwar411/notification-engine:latest
-            docker push ghcr.io/dnyaneshwar411/notification-engine:latest
 
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Build and push
+        uses: docker/build-push-action@v7
+        with:
+          push: true
+          tags: user/app:latest
 
 
 # - name: Build Docker Image And Push to GHCR_PAT
