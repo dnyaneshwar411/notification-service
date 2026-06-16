@@ -8,7 +8,8 @@ services:
 
 
   api:
-    build: .
+    image: ghcr.io/dnyaneshwar411/events:main
+    container_name: events-api
     restart: always
     ports:
       - "1993:1993"
@@ -18,7 +19,8 @@ services:
 
 
   workers:
-    build: .
+    image: ghcr.io/dnyaneshwar411/events:main
+    container_name: events-workers
     restart: always
     env_file:
       - .env

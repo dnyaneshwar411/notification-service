@@ -5,7 +5,7 @@ RUN corepack enable && corepack prepare pnpm@latest --activate
 WORKDIR /app
 
 COPY ./src ./src
-COPY package.json tsconfig.json pnpm-workspace.yaml .env ./
+COPY package.json tsconfig.json pnpm-workspace.yaml ./
 
 RUN ls
 
