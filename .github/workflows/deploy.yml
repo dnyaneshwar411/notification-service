@@ -17,7 +17,7 @@ jobs:
           password: ${{ secrets.GHCR_PAT }}
       - name: Build Docker Image And Push to GHCR_PAT
         run: |
-          docker build . --tag ghcr.io/dnyaneshwar411/notification-engine:latest
+          docker build -f Dockerfile . --tag ghcr.io/dnyaneshwar411/notification-engine:latest
           docker push ghcr.io/dnyaneshwar411/notification-engine:latest
 
 
