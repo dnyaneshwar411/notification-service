@@ -9,13 +9,12 @@ jobs:
   containerize:
     runs-on: ubuntu-latest
     steps:
-      - name: Publish
-        uses: belezyakov/publish_docker-compose@v1.0.2
-        with:
-          version: '1.0.0'
-          docker_compose: 'docker-compose.yml'
-          repo_token: "${{ secrets.GHCR_PAT }}"
-          repo_connect: true
+      - uses: actions/checkout@v3
+      - name: Build & Push the Image
+        run: |
+          docker login --username dnyaneshwar411 --password ${{ secrets.GHCR_PAT }}
+          docker build . --tag ghcr.io/dnyaneshwar411/notification-engine:latest
+          docker push hcr.io/dnyaneshwar411/notification-engine:latest
 
 
 # name: Deploy to EC2
