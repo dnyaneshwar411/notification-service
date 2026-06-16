@@ -1,4 +1,4 @@
-name: Deploy to EC2
+name: Containerize & Deploy to EC2
 
 on:
   push:
@@ -6,50 +6,69 @@ on:
       - main
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
-
+  containerize:
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Publish
+        uses: belezyakov/publish_docker-compose@v1.0.2
         with:
-          node-level: '24'
+          version: '1.0.0'
+          docker_compose: 'docker-compose.yml'
+          repo_token: "${{ secrets.GHCR_PAT }}"
+          repo_connect: true
 
-      - name: Setup PNPM
-        uses: pnpm/action-setup@v3
-        with:
-          version: 9
 
-      - name: Install Dependencies
-        run: pnpm install
+# name: Deploy to EC2
 
-      - name: Build Application
-        run: pnpm run build
+# on:
+#   push:
+#     branches:
+#       - main
 
-      - name: Copy Files to EC2 via SSH/SCP
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ubuntu
-          key: ${{ secrets.SSH_KEY }}
-          source: "dist/,package.json,pnpm-lock.yaml,ecosystem.config.js"
-          target: "/home/ubuntu"
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
 
-      - name: Production Post-Deploy via SSH
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ubuntu
-          key: ${{ secrets.SSH_KEY }}
-          script: |
-            export NVM_DIR="$HOME/.nvm"
-            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+#     steps:
+#       - name: Checkout Code
+#         uses: actions/checkout@v4
+
+#       - name: Setup Node.js
+#         uses: actions/setup-node@v4
+#         with:
+#           node-level: '24'
+
+#       - name: Setup PNPM
+#         uses: pnpm/action-setup@v3
+#         with:
+#           version: 9
+
+#       - name: Install Dependencies
+#         run: pnpm install
+
+#       - name: Build Application
+#         run: pnpm run build
+
+#       - name: Copy Files to EC2 via SSH/SCP
+#         uses: appleboy/scp-action@v0.1.7
+#         with:
+#           host: ${{ secrets.SSH_HOST }}
+#           username: ubuntu
+#           key: ${{ secrets.SSH_KEY }}
+#           source: "dist/,package.json,pnpm-lock.yaml,ecosystem.config.js"
+#           target: "/home/ubuntu"
+
+#       - name: Production Post-Deploy via SSH
+#         uses: appleboy/ssh-action@v1.0.3
+#         with:
+#           host: ${{ secrets.SSH_HOST }}
+#           username: ubuntu
+#           key: ${{ secrets.SSH_KEY }}
+#           script: |
+#             export NVM_DIR="$HOME/.nvm"
+#             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
             
-            # Now you can navigate and run your commands safely
-            cd /home/ubuntu
-            pnpm install --prod --shamefully-hoist
-            pm2 startOrReload ecosystem.config.js --update-env
-            pm2 save
+#             # Now you can navigate and run your commands safely
+#             cd /home/ubuntu
+#             pnpm install --prod --shamefully-hoist
+#             pm2 startOrReload ecosystem.config.js --update-env
+#             pm2 save
