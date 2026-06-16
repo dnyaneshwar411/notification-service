@@ -9,12 +9,13 @@ jobs:
   containerize:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Build & Push the Image
-        run: |
-          docker login --username dnyaneshwar411 --password ${{ secrets.GHCR_PAT }}
-          docker build . --tag ghcr.io/dnyaneshwar411/notification-engine:latest
-          docker push hcr.io/dnyaneshwar411/notification-engine:latest
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: dnyaneshwar411
+          password: ${{ secrets.GHCR_PAT }}
+
 
 
 # name: Deploy to EC2
