@@ -30,6 +30,9 @@ const envSchema = zod.object({
 
   MONGOOSE_DB_URL: zod.string(),
 
+  MONGOOSE_MAX_POOL_SIZE: zod.coerce.number(),
+  MONGOOSE_MIN_POOL_SIZE: zod.coerce.number(),
+
   JWT_SECRET_TOKEN: zod.string(),
 });
 

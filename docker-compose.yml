@@ -1,0 +1,12 @@
+services:
+  redis_db:
+    image: redis
+    container_name: redis_db
+  api:
+    build: .
+    ports:
+      - "1993:1993"
+    command: node dist/index.js
+  workers:
+    build: .
+    command: node dist/workers/init.js

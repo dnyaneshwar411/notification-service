@@ -6,7 +6,10 @@ import app from "./app";
 let server: undefined | Server;
 
 mongoose
-  .connect(env.MONGOOSE_DB_URL)
+  .connect(env.MONGOOSE_DB_URL, {
+    maxPoolSize: env.MONGOOSE_MAX_POOL_SIZE,
+    minPoolSize: env.MONGOOSE_MIN_POOL_SIZE
+  })
   .then(() => {
     console.log("db connected");
     server = app.listen(env.EXPRESS_PORT, () => {

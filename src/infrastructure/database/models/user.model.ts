@@ -1,5 +1,4 @@
-import bcrypt from "bcrypt";
-import { NextFunction } from "express";
+import bcrypt from "bcryptjs";
 import { InferSchemaType, model, Schema } from "mongoose";
 
 const userSchema = new Schema({
@@ -28,8 +27,6 @@ const userSchema = new Schema({
   }
 });
 
-const User = model("User", userSchema);
-
 userSchema.pre("save", async function () {
   const user = this;
 
@@ -44,6 +41,8 @@ userSchema.pre("save", async function () {
     throw error
   }
 });
+
+const User = model("User", userSchema);
 
 export default User;
 export type IUser = InferSchemaType<typeof userSchema> & { _id: Schema.Types.ObjectId | string };

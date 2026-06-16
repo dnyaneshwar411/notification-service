@@ -7,6 +7,7 @@ import {
   errorHandler,
 } from "./api/middlewares/error.middleware";
 import { v1Routes } from "./api/routes/v1";
+import "./infrastructure/database/models/index"
 
 const app: Express = express();
 
