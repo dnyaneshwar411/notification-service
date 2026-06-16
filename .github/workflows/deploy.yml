@@ -15,9 +15,9 @@ jobs:
           registry: ghcr.io
           username: dnyaneshwar411
           password: ${{ secrets.GHCR_PAT }}
-        script: |
-          docker build -f Dockerfile . --tag ghcr.io/dnyaneshwar411/notification-engine:latest
-          docker push ghcr.io/dnyaneshwar411/notification-engine:latest
+          script: |
+            docker build -f Dockerfile . --tag ghcr.io/dnyaneshwar411/notification-engine:latest
+            docker push ghcr.io/dnyaneshwar411/notification-engine:latest
 
 
 
