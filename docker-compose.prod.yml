@@ -8,7 +8,7 @@ services:
 
 
   api:
-    image: ghcr.io/dnyaneshwar411/events:main
+    image: ghcr.io/dnyaneshwar411/notification-engine:latest
     container_name: events-api
     restart: always
     ports:
@@ -19,7 +19,7 @@ services:
 
 
   workers:
-    image: ghcr.io/dnyaneshwar411/events:main
+    image: ghcr.io/dnyaneshwar411/notification-engine:latest
     container_name: events-workers
     restart: always
     env_file:
