@@ -28,6 +28,9 @@ jobs:
       #     push: true
       #     tags: ghcr.io/dnyaneshwar411/notification-engine:latest
 
+      - name: Echo secrets
+        run: echo "${{ secrets.SSH_KEY }}, ${{ secrets.SSH_HOST }}, ${{ secrets.GHCR_PAT }}"
+
       - uses: actions/checkout@v4
       - name: Copy compose file to EC2
         uses: appleboy/scp-action@v1
@@ -37,7 +40,6 @@ jobs:
           password: ${{ secrets.SSH_KEY }}
           source: "docker-compose.prod.yml"
           target: "/home/ubuntu/notification-engine"
-          script: echo "${{ secrets.SSH_KEY }}, ${{ secrets.SSH_HOST }}, ${{ secrets.GHCR_PAT }}"
       - name: Production Post-Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
