@@ -41,5 +41,5 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} \
             "cd /home/ubuntu/notification-engine && \
              echo '${{ secrets.GHCR_PAT }}' | docker login ghcr.io -u dnyaneshwar411 --password-stdin && \
-             docker compose pull && \
-             docker compose up -d --remove-orphans"
+             docker-compose pull && \
+             docker-compose up -d --remove-orphans"
