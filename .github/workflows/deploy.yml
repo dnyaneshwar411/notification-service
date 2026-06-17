@@ -42,4 +42,4 @@ jobs:
             "cd /home/ubuntu/notification-engine && \
              echo '${{ secrets.GHCR_PAT }}' | docker login ghcr.io -u dnyaneshwar411 --password-stdin && \
              docker-compose pull && \
-             docker-compose up -d --remove-orphans"
+             docker-compose -f docker-compose.prod.yml up -d --remove-orphans"
