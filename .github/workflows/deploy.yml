@@ -8,69 +8,37 @@ jobs:
   containerize:
     runs-on: ubuntu-latest
     steps:
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: dnyaneshwar411
+          password: ${{ secrets.GHCR_PAT }}
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Build and push
+        uses: docker/build-push-action@v7
+        with:
+          push: true
+          tags: ghcr.io/dnyaneshwar411/notification-engine:latest
+
       - uses: actions/checkout@v3
       - name: Get SSH Keys & Set Permissions
         run: |
             mkdir -p ~/.ssh
             echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
+
       - name: Deploy using SCP
         run: scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa -r ./docker-compose.prod.yml ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/notification-engine
+
       - name: Restart Server
-        run: ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd /home/ubuntu && touch index.js"
-
-# - name: Build Docker Image And Push to GHCR_PAT
-# name: Deploy to EC2
-
-# on:
-#   push:
-#     branches:
-#       - main
-
-# jobs:
-#   deploy:
-#     runs-on: ubuntu-latest
-
-#     steps:
-#       - name: Checkout Code
-#         uses: actions/checkout@v4
-
-#       - name: Setup Node.js
-#         uses: actions/setup-node@v4
-#         with:
-#           node-level: '24'
-
-#       - name: Setup PNPM
-#         uses: pnpm/action-setup@v3
-#         with:
-#           version: 9
-
-#       - name: Install Dependencies
-#         run: pnpm install
-
-#       - name: Build Application
-#         run: pnpm run build
-
-#       - name: Copy Files to EC2 via SSH/SCP
-#         uses: appleboy/scp-action@v0.1.7
-#         with:
-#           host: ${{ secrets.SSH_HOST }}
-#           username: ubuntu
-#           key: ${{ secrets.SSH_KEY }}
-#           source: "dist/,package.json,pnpm-lock.yaml,ecosystem.config.js"
-#           target: "/home/ubuntu"
-
-#       - name: Production Post-Deploy via SSH
-#         uses: appleboy/ssh-action@v1.0.3
-#         with:
-#           host: ${{ secrets.SSH_HOST }}
-#           username: ubuntu
-#           key: ${{ secrets.SSH_KEY }}
-#           script: |
-#             export NVM_DIR="$HOME/.nvm"
-#             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-            
-#             # Now you can navigate and run your commands safely
-#             cd /home/ubuntu
-#             pnpm install --prod --shamefully-hoist
-#             pm2 startOrReload ecosystem.config.js --update-env
-#             pm2 save
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} \
+            "cd /home/ubuntu/notification-engine && \
+             docker login --username dnyaneshwar411 --password ${{ GHCR_PAT }} ghcr.io
+             docker pull ghcr.io/dnyaneshwar411/notification-engine:latest"
