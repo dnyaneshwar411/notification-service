@@ -8,27 +8,14 @@ jobs:
   containerize:
     runs-on: ubuntu-latest
     steps:
-      - name: "Configure SSH"
-        env:
-            SSH_USER: ubuntu
-            SSH_KEY: ${{ secrets.SSH_KEY }}
-            SSH_HOST: ${{ secrets.SSH_HOST }}
-            SSH_PORT: 22
+      - name: Get SSH Keys & Set Permissions
         run: |
-            mkdir -p ~/.ssh/
-            echo "$SSH_KEY" > ~/.ssh/external-machine.key
-            chmod 600 ~/.ssh/external-machine.key
-            cat >>~/.ssh/config <<END
-            Host external-machine
-              HostName $SSH_HOST
-              User $SSH_USER
-              Port $SSH_PORT
-              IdentityFile ~/.ssh/external-machine.key
-              StrictHostKeyChecking no
-            END
-
-      - name: Deploy content
-        run: ssh external-machine 'cd /home/ubuntu && touch index.js'
+            mkdir -p ~/.ssh
+            echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
+      - name: Deploy using SCP
+        run: scp -o StrickHostKeyChecking=no -i ~/.ssh/id_rsa -r ./docker-compose.prod.yml ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:~/notification-engine
+      - name: Restart Server
+        run: ssh -o StrickHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd /home/ubuntu && touch index.js"
 
 # - name: Build Docker Image And Push to GHCR_PAT
 # name: Deploy to EC2
