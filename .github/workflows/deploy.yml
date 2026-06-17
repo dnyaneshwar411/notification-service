@@ -40,5 +40,5 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} \
             "cd /home/ubuntu/notification-engine && \
-             docker login --username dnyaneshwar411 --password ${{ GHCR_PAT }} ghcr.io
+             docker login --username dnyaneshwar411 --password ${{ secrets.GHCR_PAT }} ghcr.io
              docker pull ghcr.io/dnyaneshwar411/notification-engine:latest"
