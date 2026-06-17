@@ -12,9 +12,35 @@ jobs:
       - name: Production Post-Deploy via SSH
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.SSH_HOST }}
+          host: 43.204.35.93
           username: ubuntu
-          key: ${{ secrets.SSH_KEY }}
+          key: '-----BEGIN RSA PRIVATE KEY-----
+MIIEogIBAAKCAQEAuD5Sl28vV/+ud0BLoYAhFJN8WQyzsdUAhFyrC21HdusPSjWX
+3V8sdkx9/qI1waDC29Wf/yMviqNOpobd7g65TBhkHN4CvbCo3E3EYMFfQiuDFRlH
+4gZWmyMyQOuyBgjim69oDpy1AlaHOkCmVP/1RWzJCt8BG0wEpNyZ0uRqnNr6BOyL
+f2p5MGcAiH3z5R60T6nMpQQlphr9Q7F6YkumcJNJqb8m2n5wvL2mAFeeBPLt7v4Z
+PfT4uL524gb3exEyJ0tUtjaR2RmwHD+Y8mnVhz7fFEwCdvrCNyfN6hM7RkcBM3Iq
+iFvycmlDiI6sySxRQz+Jj8Huw9ZkRwPvuDge9QIDAQABAoIBAEezsW7PzWwAzEQK
+mKRsefNJBo6dW91sWLwqWEKlL7e++P9XZhe371TGpg4P0L3fM5ZcR90CM4FP1s8G
+E56Oylwr7eIyIHz0IHNELJW/C7RzvJrccNYsw02y397WGz0v/gi6tdNh9yvGwu/P
+syvHRQvUr1T0vriB2BjU5WRmknsiMC8StrjoLjP/6d0Ra+QNdqwrcBHttvuXwodk
+jJ09ZQdwp0O+6IZ2oBBAVn7QeSM/QalwA/RPyM05oSJskO0brhquxw9p4CtcOOwf
+d7JwshjCwSrG31hHJh1CcjHGAZD3KOjAmW1GCccht6E5GH72dWM6rZAnLssup2Qn
+/cRoZw0CgYEA3jtgawS0IT7HLevxDMOh0ftTIo927yJFZXtW/867GOQvPX5276nE
+gi05V5cBW5uMsHXMJTLgo2BYYh70K9CHTjBYnztDihVxbuZLXlxxTIZU2M6gUomK
+WiH4kI8nKG52hnALAlxucWyFZnIJsv/Luc+eG1PWrKFq/lcyXe3HpvMCgYEA1D06
+SQN4g1Kxf+oyGKZbe585rzg2Xx9iWBCM8i6wsxRO8THqO+8pVwyyhTQKG3hSIFvC
+Vc2DeYT62X3UVx3uR+ly/M2TnENTvP8lkFCcCVr1tWWO/+H4uoEo3IiepyTFz6tU
+GrulfHl0OMI9SuMSuBiP3hSvmPP2cDymYUbZbHcCgYADn/pRpJD/ndOH5zpWV/aS
+w0O245owCmIRZrKjl46ruEUg/qgX/q/q46v0xszJ3r6rvjAnRy4s3Ax1BUY8VLlw
+SA+aAVB3tyPTiEQgdOeQNPy7UJuC3SV5lOZGDV+5JBwg00EKt9FBXmDKq/+GgO+k
+x0Mv9O0igbuKDIgQyikgiwKBgHjVYxmuoC4kJmptK5hdHjiDrpPTrSD6/UKmKZi4
+fGF4bnljsbftsdudnwW3WwnItvk1RK8VEoVc8HRi70GqCL9oac8EO8X7jvFLUleX
+jT7GSp279G46eSG1502neqwug3B4Wqndq5nyi/jEnaDFJyMo2L/XhyHNw8Cixxca
+/y6BAoGAB4JtddlEFGAz24zLY0NLCeTmzedr0MQ1RclugEX/og7cOegXsuEMWGYQ
+3UOYSLjQVKInBK9vLCTsbbpgenH6B1WJ0r35lWP0jWvz+1iky0a2Zb8/77WZcdMf
+D5cuWxPkdjvzHEn+hfvItd9EI6wIA6xanN1NKs6x+EyJReWyj44=
+-----END RSA PRIVATE KEY-----'
           port: 22
           script: |
             echo "india"
