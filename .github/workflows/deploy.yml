@@ -1,6 +1,5 @@
 name: Containerize & Deploy to EC2
 
-
 on:
   push:
     branches:
