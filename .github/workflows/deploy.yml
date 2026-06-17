@@ -39,11 +39,11 @@ jobs:
       #     source: "docker-compose.prod.yml"
       #     target: "/home/ubuntu/notification-engine"
       - name: Production Post-Deploy via SSH
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ubuntu
-          key: ${{ secrets.SSH_KEY }}
+          password: ${{ secrets.SSH_KEY }}
           port: 22
           script: |
             echo "india"
