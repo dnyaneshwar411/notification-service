@@ -8,7 +8,7 @@ jobs:
   containerize:
     runs-on: ubuntu-latest
     steps:
-      - user: actions/checkout@v3
+      - uses: actions/checkout@v3
       - name: Get SSH Keys & Set Permissions
         run: |
             mkdir -p ~/.ssh
