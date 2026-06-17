@@ -28,6 +28,7 @@ jobs:
       #     push: true
       #     tags: ghcr.io/dnyaneshwar411/notification-engine:latest
 
+
       - uses: actions/checkout@v4
       # - name: Copy compose file to EC2
       #   uses: appleboy/scp-action@v1
